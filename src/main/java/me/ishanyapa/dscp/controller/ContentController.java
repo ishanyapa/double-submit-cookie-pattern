@@ -11,6 +11,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 @Controller
 @RequestMapping("/api")
@@ -20,17 +21,19 @@ public class ContentController {
     TokenService tokenService;
 
     @PostMapping(value="/content")
-    public String changeContent(@RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName, @RequestParam("_csrf") String _csrf, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) {
+    public void changeContent(@RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName,
+                              @RequestParam("_csrf") String _csrf, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) throws IOException {
 
         Cookie[] cookies = request.getCookies();
 
         for (Cookie cookie : cookies) {
 
             if (cookie.getName().equals("_csrf") && cookie.getValue().equals(_csrf)) {
-                return "redirect:/home.html";
+                response.sendRedirect("/home.html");
+                return;
             }
         }
 
-        return "redirect:/error.html";
+        response.sendError(400);
     }
 }
