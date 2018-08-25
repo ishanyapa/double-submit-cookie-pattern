@@ -28,7 +28,7 @@ public class AuthController extends BaseController {
         if (String.valueOf(email).equals("ishanyapa@gmail.com") && String.valueOf(password).equals("123")) {
 
             Cookie cookie = new Cookie("_csrf", tokenService.generateNewToken());
-            cookie.setPath("/home.html");
+            cookie.setPath("/");
             response.addCookie(cookie);
             HttpSession httpSession = request.getSession(true);
             response.encodeURL("/home.html");
