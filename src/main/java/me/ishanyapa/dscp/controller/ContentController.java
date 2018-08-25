@@ -28,7 +28,7 @@ public class ContentController {
 
         for (Cookie cookie : cookies) {
 
-            if (cookie.getName().equals("_csrf") && cookie.getValue().equals(_csrf)) {
+            if (tokenService.compareTokens(cookie.getName(), cookie.getValue(), _csrf)) {
                 response.sendRedirect("/home.html");
                 return;
             }
