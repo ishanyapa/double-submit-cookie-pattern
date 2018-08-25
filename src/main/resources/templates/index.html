@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CSRF Test</title>
+
+    <!--Bootstrap CSS Framework-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+    <!--JQuery-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="http://malsup.github.com/jquery.form.js"></script>
+
+    <!--Custom CSS Style-->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="text-center">
+<form class="form-signin" id="form" name="form">
+    <h1 class="h3 mb-3 font-weight-normal">Double Submit Cookie Pattern</h1>
+    <div class="form-group">
+        <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp" placeholder="Email">
+    </div>
+    <div class="form-group">
+        <input type="password" class="form-control" name="password" id="password" placeholder="Password">
+    </div>
+    <button type="button" class="btn btn-primary btn-block" onclick="login()">Submit</button>
+    <p class="mt-5 mb-3 text-muted">&copy; Ishan Yapa | 2018</p>
+</form>
+<div class="alert alert-danger" role="alert" name="alertErr" id="alertErr" hidden>
+    Username or password incorrect!
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<script>
+    var alertErr = document.getElementById("alertErr");
+    function login() {
+
+        var email = document.getElementById("email").value;
+        var password = document.getElementById("password").value;
+        $.ajax({
+            type: "POST",
+            url: "/api/login?email="+email+"&password="+password,
+            success: function() {
+                location.reload();
+            },
+            error: function () {
+                document.getElementById("form").appendChild(alertErr);
+                document.getElementById("alertErr").hidden = false;
+            }
+        });
+    }
+</script>
+</body>
+</html>
