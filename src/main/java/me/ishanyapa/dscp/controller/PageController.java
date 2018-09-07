@@ -18,31 +18,25 @@ public class PageController extends BaseController {
 
     @GetMapping(value="/")
     public String getRoot(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
         if(request.getSession(false)== null) {
             return "redirect:/index.html";
         }
-
         return "redirect:/home.html";
     }
 
     @GetMapping(value="/index.html")
     public String getIndex(HttpServletRequest request, HttpServletResponse response) {
-
         if(request.getSession(false)== null) {
             return "/index.html";
         }
-
         return "redirect:/home.html";
     }
 
     @GetMapping(value="/home.html")
     public String getHome(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
         if(request.getSession(false) == null) {
             return "redirect:/index.html";
         }
-
         return "/home.html";
     }
 

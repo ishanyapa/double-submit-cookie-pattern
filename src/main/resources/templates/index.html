@@ -43,7 +43,8 @@
         var password = document.getElementById("password").value;
         $.ajax({
             type: "POST",
-            url: "/api/login?email="+email+"&password="+password,
+            url: "/api/login",
+            data: {email: email, password: password},
             success: function() {
                 location.reload();
             },

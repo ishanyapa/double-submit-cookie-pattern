@@ -27,7 +27,6 @@ public class ContentController {
         Cookie[] cookies = request.getCookies();
 
         for (Cookie cookie : cookies) {
-
             if (tokenService.compareTokens(cookie.getName(), cookie.getValue(), _csrf)) {
                 response.sendRedirect("/home.html");
                 return;
