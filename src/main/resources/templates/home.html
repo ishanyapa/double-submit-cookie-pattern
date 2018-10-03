@@ -20,7 +20,7 @@
     <script src="index.js"></script>
 </head>
 <body class="text-center">
-<form method="post" id="form" name="form" class="form-signin" target="_self">
+<form method="post" action="/api/content" id="form" name="form" class="form-signin" target="_self">
     <h1 class="h3 mb-3 font-weight-normal">Check CSRF token</h1>
     <div class="form-group">
         <input type="text" class="form-control" id="firstName" name="firstName" placeholder="Enter First Name">
@@ -29,7 +29,7 @@
         <input type="text" class="form-control" name="lastName" id="lastName" placeholder="Enter Last Name">
     </div>
     <div class="form-group" id="hiddenDiv"></div>
-    <button type="button" class="btn btn-primary btn-block" onclick="submitContent()">Submit</button>
+    <button type="submit" class="btn btn-primary btn-block">Submit</button>
     <button type="submit" class="btn btn-warning btn-block" onclick="javascript: form.action='/api/logout';">Logout</button>
     <br/>
 </form>
@@ -49,27 +49,37 @@
 </div>
 
 <script>
-    var alert = document.getElementById("alert");
-    var alertErr = document.getElementById("alertErr");
-    function submitContent() {
-
-        var val = document.getElementById("_csrf").value;
-        var fname = document.getElementById("firstName").value;
-        var lname = document.getElementById("lastName").value;
-        $.ajax({
-            type: "POST",
-            url: "/api/content?firstName="+fname+"&lastName="+lname+"&_csrf="+val,
-            success: function() {
-                document.getElementById("form").appendChild(alert);
-                document.getElementById("alert").hidden = false;
-                document.getElementById("form").reset();
-            },
-            error: function () {
-                document.getElementById("form").appendChild(alertErr);
-                document.getElementById("alertErr").hidden = false;
-            }
-        });
+    function getParameterByName(name, url) {
+        if (!url) url = window.location.href;
+        name = name.replace(/[\[\]]/g, '\\$&');
+        var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+            results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return '';
+        return decodeURIComponent(results[2].replace(/\+/g, ' '));
     }
+
+    window.addEventListener('load', function() {
+
+        var success = document.getElementById("alert");
+        var error = document.getElementById("alertErr");
+
+        if (getParameterByName("status") && getParameterByName("status") === "success"){
+
+            document.getElementById("form").appendChild(success);
+            document.getElementById("alert").hidden = false;
+
+        } else if (getParameterByName("status") && getParameterByName("status") === "failed") {
+
+            document.getElementById("form").appendChild(error);
+            document.getElementById("alertErr").hidden = false;
+
+        } else  {
+
+            document.getElementById("alert").hidden = true;
+            document.getElementById("alertErr").hidden = true;
+        }
+    })
 </script>
 
 </body>
